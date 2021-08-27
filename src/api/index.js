@@ -1,6 +1,6 @@
 import axios from "axios";
 import BuildConfig from "../config";
-import { aesPub } from "../utils/encrypt";
+import { aesPub, processRequest } from "../utils/encrypt";
 
 function processRequestData(method, data = {}, headers) {
   if (["GET", "DELETE"].includes(method)) {
@@ -10,9 +10,7 @@ function processRequestData(method, data = {}, headers) {
       headers: { ...headers, aesKey: aesPub },
     };
   } else {
-    console.log("BASE_URL:::::", BuildConfig.BASE_URL);
-    // { data: BuildConfig.BASE_URL ? data : processRequest(data) }
-    return;
+    return { data: BuildConfig.BASE_URL ? data : processRequest(data) };
   }
 }
 
