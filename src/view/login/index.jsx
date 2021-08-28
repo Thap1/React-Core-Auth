@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Input, Button } from "antd";
 import "antd/dist/antd.css";
 import { login } from "./../../api/login";
+import { useHistory } from "react-router-dom";
+import { protextedPath } from "../../router";
 const LoginPage = () => {
+  const history = useHistory()
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -15,6 +18,7 @@ const LoginPage = () => {
     login(requestBody)
       .then((res) => {
         console.log("Login Response:::", res.data.responseMessage);
+        history.push(protextedPath.profile)
       })
       .catch((err) => console.log("err:", err));
   };
