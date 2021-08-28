@@ -10,7 +10,7 @@ function processRequestData(method, data = {}, headers) {
       headers: { ...headers, aesKey: aesPub },
     };
   } else {
-    return { data: BuildConfig.BASE_URL ? data : processRequest(data) };
+    return { data: BuildConfig.IS_MOCK ? data : processRequest(data) };
   }
 }
 
@@ -41,9 +41,11 @@ export function makeRequset(requset) {
       .request(requestObj)
       .then((res) => {
         console.log("response::", res);
+        resolve(res);
       })
       .catch((err) => {
         console.log("err::", err);
+        reject(err);
       })
       .finally(() => {
         // hiddenLoading

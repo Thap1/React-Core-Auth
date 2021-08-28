@@ -17,7 +17,7 @@ const _loadEnvConfig = (env) => {
 export default class BuildConfig {
   _buildConfig = null;
 
-  static init({ env }) {
+  static init(env) {
     if (!env) {
       throw new Error("Envionment tyoe can not be blank / null");
     }
@@ -27,11 +27,10 @@ export default class BuildConfig {
     return this._buildConfig?.ENV !== BUILD_VARIANTS.PRO;
   }
   static get ENV() {
-    return this._buildConfig?.HOST;
+    return this._buildConfig?.ENV;
   }
   static get BASE_URL() {
-    console.log("Test");
-    return this._buildConfig?.ENV || _loadEnvConfig(BUILD_VARIANTS.DEV).HOST;
+    return this._buildConfig?.HOST;
   }
   static get IS_MOCK() {
     return this._buildConfig?.ENV === "MOCK";

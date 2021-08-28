@@ -14,25 +14,25 @@ const LoginPage = () => {
     };
     login(requestBody)
       .then((res) => {
-        console.log("Login Response:::", res);
+        console.log("Login Response:::", res.data.responseMessage);
       })
       .catch((err) => console.log("err:", err));
   };
 
   return (
-    <div className="">
+    <div className=''>
       <h2>Login Form</h2>
       <Input
-        type="text"
-        placeholder="Username"
-        name="username"
+        type='text'
+        placeholder='Username'
+        name='username'
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
       <Input
-        type="password"
-        placeholder="Password"
-        name="password"
+        type='password'
+        placeholder='Password'
+        name='password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
