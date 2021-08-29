@@ -37,10 +37,14 @@ export function makeRequset(requset) {
     };
 
     // request axios
+    console.log("requestObj:::", requestObj);
+
     axios
       .request(requestObj)
       .then((res) => {
-        console.log("response::", res);
+        console.log(`response:::::`, res?.data);
+
+
         resolve(res);
       })
       .catch((err) => {

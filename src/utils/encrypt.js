@@ -22,10 +22,9 @@ export function processRequest(data) {
     JSON.stringify(Object.assign({}, dataWithAESKey)),
     aesPub
   );
-  console.log("requestData:::", requestData);
-
   encodeKey = encryptRSA(aesPub);
 
+  console.log("time:::", moment(now).format("yyyyMMDDHHmmss"));
   Object.assign(result, EncryptConstants.params, {
     requestId: `${timestamp}`,
     timestamp: moment(now).format("yyyyMMDDhhmmss"),
@@ -33,7 +32,6 @@ export function processRequest(data) {
     encodeKey,
   });
   result.sign = addSign(result);
-  console.log("result::::", result);
   return result;
 }
 
