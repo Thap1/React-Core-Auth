@@ -5,7 +5,7 @@ import { login } from "./../../api/login";
 import { useHistory } from "react-router-dom";
 import { protextedPath } from "../../router";
 const LoginPage = () => {
-  const history = useHistory()
+  const history = useHistory();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -18,7 +18,7 @@ const LoginPage = () => {
     login(requestBody)
       .then((res) => {
         console.log("Login Response:::", res.data.responseMessage);
-        history.push(protextedPath.profile)
+        history.push(protextedPath.menu);
       })
       .catch((err) => console.log("err:", err));
   };
