@@ -1,5 +1,3 @@
-/** @format */
-
 import { EncryptConstants } from "../constans";
 import CryptoJS from "crypto-js";
 import JSEncrypt from "jsencrypt";

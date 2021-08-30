@@ -8,24 +8,24 @@ import { FORGOT_PASSWORD, LOGIN_URL } from "./requestPath";
 
 axios.defaults.timeout = 5 * 60 * 1000;
 
-// axios.interceptors.request.use((request) => {
-//   if (request.url !== LOGIN_URL && request.url !== FORGOT_PASSWORD) {
-//     request.headers.Authorization = `Bearer ${getToken()}`;
-//     return request;
-//   }
-//   return request;
-// });
+axios.interceptors.request.use((request) => {
+  if (request.url !== LOGIN_URL && request.url !== FORGOT_PASSWORD) {
+    request.headers.Authorization = `Bearer ${getToken()}`;
+    return request;
+  }
+  return request;
+});
 
-// axios.interceptors.response.use((response) => {
-//   const { data } = response;
-//   console.log("data::::", data);
-//   if (data?.respnseCode === ResponseStatusCode.success) {
-//     return processResponse(data);
-//   } else {
-//     handleError(data?.respnseCode ?? "", data?.responseMessage);
-//     return Promise.reject({ responseCode: data?.responseCode });
-//   }
-// });
+axios.interceptors.response.use((response) => {
+  const { data } = response;
+  console.log("data::::", data);
+  if (data?.respnseCode === ResponseStatusCode.success) {
+    return processResponse(data);
+  } else {
+    handleError(data?.respnseCode ?? "", data?.responseMessage);
+    return Promise.reject({ responseCode: data?.responseCode });
+  }
+});
 
 function processRequestData(method, data = {}, headers) {
   if (["GET", "DELETE"].includes(method)) {

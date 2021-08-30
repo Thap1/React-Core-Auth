@@ -14,6 +14,7 @@ const ApplicationRoute = () => {
     return setAccessMatrix(accessMatrixModel);
   };
   console.log("menuAccessMatrix:::", menuAccessMatrix);
+  return <div>appp</div>;
 };
 
 export default ApplicationRoute;
