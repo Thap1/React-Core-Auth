@@ -6,11 +6,15 @@ import jwtDecode from "jwt-decode";
 import { useHistory } from "react-router-dom";
 import { protextedPath } from "../../router";
 import CryptoJS from "crypto-js";
+import { setAuth } from "../../utils/sesstion-storage";
+import { authenticated } from "../../state-recoil";
+import { useRecoilState } from "recoil";
 
 const LoginPage = () => {
   const history = useHistory();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [, setAuthRecoil] = useRecoilState(authenticated);
 
   const clickLogin = () => {
     console.log("Submit:::", username, password);
@@ -21,11 +25,25 @@ const LoginPage = () => {
     login(requestBody)
       .then((res) => {
         console.log("res:::::::", res);
-
-        // console.log("res?.data?.authToken::::", res?.data?.authToken);
-
-        let decodeData = decodeResponse(res?.data);
-        console.log("Login decodeData:::", decodeData);
+        let userInfo = {};
+        try {
+          let decodeData = decodeResponse(res?.data?.authToken);
+          if (decodeData) {
+            userInfo = {
+              ...res?.data,
+              roleName: decodeData.resource_access["spring-boot"].roles[0],
+              fullName: decodeData.name,
+            };
+            setAuth({ userInfo });
+            setAuthRecoil({
+              isAuthentication: true,
+              userInfo: userInfo,
+            });
+            console.log("userInfo:::", userInfo);
+          }
+        } catch (error) {
+          console.log("error: ", error);
+        }
         history.push(protextedPath.menu);
       })
       .catch((err) => console.log("errLogin:", err));

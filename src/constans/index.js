@@ -14,6 +14,7 @@ export const ResponseStatusCode = {
 };
 
 export const AUTH_TOKEN = "AUTH_TOKEN";
+export const AUTH_SESSION_KEY = "AUTH_SESSION_KEY";
 
 export const EncryptConstants = {
   publicKey:

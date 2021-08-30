@@ -18,11 +18,10 @@ axios.interceptors.request.use((request) => {
 
 axios.interceptors.response.use((response) => {
   const { data } = response;
-  console.log("data::::", data);
-  if (data?.respnseCode === ResponseStatusCode.success) {
+  if (data?.responseCode === ResponseStatusCode.success) {
     return processResponse(data);
   } else {
-    handleError(data?.respnseCode ?? "", data?.responseMessage);
+    handleError(data?.responseCode ?? "", data?.responseMessage);
     return Promise.reject({ responseCode: data?.responseCode });
   }
 });
@@ -62,7 +61,6 @@ export function makeRequset(requset) {
     };
 
     // request axios
-    console.log("requestObj:::", requestObj);
 
     axios
       .request(requestObj)

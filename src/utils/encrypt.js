@@ -72,7 +72,6 @@ function getAESKey() {
 
 export function processResponse(response) {
   const { responseData, responseCode, responseMessage } = response;
-  console.log("responseData:::", responseData);
   if (typeof responseData === "string" && responseData !== "") {
     return {
       responseCode: responseCode,
@@ -89,5 +88,5 @@ function decodeAES(responseData, aesPub) {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.ZeroPadding,
   });
-  return CryptoJS.enc.stringify(decrypted).trim();
+  return CryptoJS.enc.Utf8.stringify(decrypted).trim();
 }
