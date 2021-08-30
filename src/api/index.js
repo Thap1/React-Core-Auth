@@ -1,6 +1,31 @@
 import axios from "axios";
 import BuildConfig from "../config";
-import { aesPub, processRequest } from "../utils/encrypt";
+import { ResponseStatusCode } from "../constans";
+import { aesPub, processRequest, processResponse } from "../utils/encrypt";
+import { handleError } from "../utils/handleError";
+import { getToken } from "../utils/sesstion-storage";
+import { FORGOT_PASSWORD, LOGIN_URL } from "./requestPath";
+
+axios.defaults.timeout = 5 * 60 * 1000;
+
+axios.interceptors.request.use((request) => {
+  if (request.url !== LOGIN_URL && request.url !== FORGOT_PASSWORD) {
+    request.headers.Authorization = `Bearer ${getToken()}`;
+    return request;
+  }
+  return request;
+});
+
+axios.interceptors.response.use((response) => {
+  const { data } = response;
+  console.log("data::::", data);
+  if (data?.respnseCode === ResponseStatusCode.success) {
+    return processResponse(data);
+  } else {
+    handleError(data?.respnseCode ?? "", data?.responseMessage);
+    return Promise.reject({ responseCode: data?.responseCode });
+  }
+});
 
 function processRequestData(method, data = {}, headers) {
   if (["GET", "DELETE"].includes(method)) {
@@ -42,13 +67,10 @@ export function makeRequset(requset) {
     axios
       .request(requestObj)
       .then((res) => {
-        console.log(`response:::::`, res?.data);
-
-
         resolve(res);
       })
       .catch((err) => {
-        console.log("err::", err);
+        console.log("errRequest ::", err);
         reject(err);
       })
       .finally(() => {
