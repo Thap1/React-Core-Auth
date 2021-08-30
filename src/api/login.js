@@ -1,6 +1,7 @@
 import { makeRequset } from "./index";
+import { LOGIN_URL } from "./requestPath";
 
 export function login(data = {}) {
-  const url = "sat/app/api/v1/admin/login";
+  const url = LOGIN_URL;
   return makeRequset({ url, method: "POST", data });
 }

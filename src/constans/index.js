@@ -6,6 +6,14 @@ export const BUILD_VARIANTS = {
   UAT: "UAT",
   PRO: "PRODUCTION",
 };
+export const ResponseStatusCode = {
+  success: "000000",
+  expired: "401",
+  forceExpired: "400",
+  dataDoesNotExist: "910006",
+};
+
+export const AUTH_TOKEN = "AUTH_TOKEN";
 
 export const EncryptConstants = {
   publicKey:

@@ -17,14 +17,12 @@ export function processRequest(data) {
   let encodeKey = null;
 
   const dataWithAESKey = { ...data, aesKey: aesPub };
-  console.log("aesPub:::", aesPub);
   requestData = encryptAES(
     JSON.stringify(Object.assign({}, dataWithAESKey)),
     aesPub
   );
   encodeKey = encryptRSA(aesPub);
 
-  console.log("time:::", moment(now).format("yyyyMMDDHHmmss"));
   Object.assign(result, EncryptConstants.params, {
     requestId: `${timestamp}`,
     timestamp: moment(now).format("yyyyMMDDhhmmss"),
@@ -72,4 +70,26 @@ function getAESKey() {
   }
   const result = key.join("");
   return result;
+}
+
+export function processResponse(response) {
+  const { responseData, responseCode, responseMessage } = response;
+  console.log("responseData:::", responseData);
+  if (typeof responseData === "string" && responseData !== "") {
+    return {
+      responseCode: responseCode,
+      data: JSON.parse(decodeAES(responseData, aesPub)),
+      responseMessage: responseMessage,
+    };
+  } else return responseData;
+}
+
+function decodeAES(responseData, aesPub) {
+  const aesKey = CryptoJS.enc.Utf8.parse(aesPub);
+  const decrypted = CryptoJS.AES.decrypt(responseData, aesKey, {
+    iv: CryptoJS.enc.Utf8.parse(EncryptConstants.ivKey),
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.ZeroPadding,
+  });
+  return CryptoJS.enc.stringify(decrypted).trim();
 }
