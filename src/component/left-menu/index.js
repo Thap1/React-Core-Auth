@@ -3,8 +3,9 @@ import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import Item from "antd/lib/list/Item";
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-const LeftMenu = () => {
+const LeftMenu = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -29,13 +30,16 @@ const LeftMenu = () => {
         </Sider>
         <Content>
           <Menu>
-            <Item>Top Menu 1</Item>
-            <Item>Top Menu 1</Item>
+            <Item>{children}</Item>
           </Menu>
         </Content>
       </Layout>
     </div>
   );
+};
+
+LeftMenu.propTypes = {
+  children: PropTypes.node,
 };
 
 export default LeftMenu;

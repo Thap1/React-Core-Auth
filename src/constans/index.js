@@ -29,3 +29,16 @@ export const EncryptConstants = {
   },
   ivKey: "1234567812345678",
 };
+
+export const ROLE_NAME = {
+  // TODO: Spelling mistake, need update when BE changed
+  FIELD_INVESTIGATOR: "Field Investigator",
+  PHONE_INVESTIGATOR: "PI User",
+  AGENT: "agent",
+  ASSIGNOR: "Assignor",
+  BRANCH_USER: "Branch Staff",
+  HQ_USER: "HQ Staff",
+  DEALER: "Dealer",
+  PARTNERSHIP_MANAGER: "Pratnership Manager",
+  ADMIN: "super_admin",
+};

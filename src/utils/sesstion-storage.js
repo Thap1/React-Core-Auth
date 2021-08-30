@@ -20,3 +20,12 @@ export const getUserInfo = () => {
   }
   return null;
 };
+
+export const getRoleName = () => {
+  const authSession = window.sessionStorage.getItem(AUTH_SESSION_KEY);
+  if (authSession) {
+    const data = JSON.parse(authSession);
+    return data?.userInfo?.roleName ?? null;
+  }
+  return null;
+};

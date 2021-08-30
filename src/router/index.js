@@ -4,6 +4,7 @@ import LeftMenu from "../component/left-menu";
 import LoginPage from "../view/login";
 import PageNotFound from "../view/page-found/PageNotFound";
 import Profile from "../view/profile";
+import ApplicationRoute from "./ApplicationRoute";
 
 export const protextedPath = {
   initPath: "/",
@@ -26,6 +27,7 @@ export const AppRouter = () => {
           <Route path={protextedPath.menu} component={LeftMenu} />
           <Route path={protextedPath.profile} component={Profile} />
           <Route path={protextedPath.notFound} component={PageNotFound} />
+          <ApplicationRoute />
           <Route
             exact
             path='*'
