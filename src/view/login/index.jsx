@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { login } from "./../../api/login";
 import jwtDecode from "jwt-decode";
 import { useHistory } from "react-router-dom";
-import { protextedPath } from "../../router";
+import { pathContent } from "../../router";
 import CryptoJS from "crypto-js";
 import { setAuth } from "../../utils/sesstion-storage";
 import { authenticated } from "../../state-recoil";
@@ -17,14 +17,12 @@ const LoginPage = () => {
   const [, setAuthRecoil] = useRecoilState(authenticated);
 
   const clickLogin = () => {
-    console.log("Submit:::", username, password);
     const requestBody = {
       username: username,
       password: password,
     };
     login(requestBody)
       .then((res) => {
-        console.log("res:::::::", res);
         let userInfo = {};
         try {
           let decodeData = decodeResponse(res?.data?.authToken);
@@ -39,12 +37,11 @@ const LoginPage = () => {
               isAuthentication: true,
               userInfo: userInfo,
             });
-            console.log("userInfo:::", userInfo);
           }
         } catch (error) {
           console.log("error: ", error);
         }
-        history.push(protextedPath.menu);
+        history.push(pathContent.dashboard);
       })
       .catch((err) => console.log("errLogin:", err));
   };

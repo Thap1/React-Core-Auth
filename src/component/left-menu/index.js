@@ -1,38 +1,52 @@
 import { Button, Menu } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
-import Item from "antd/lib/list/Item";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
-const LeftMenu = ({ children }) => {
+const LeftMenu = (prop) => {
   const [collapsed, setCollapsed] = useState(false);
+  const history = useHistory();
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
+  const { menuLists, children } = prop;
+
+  const handleClickItem = (element) => {
+    history.push(element.key);
+    console.log("menuPath:::", element.key);
+  };
+
+  const menu = (param) => {
+    if (param) {
+      return (
+        <Menu
+          onClick={handleClickItem}
+          defaultSelectedKeys={["1"]}
+          theme='dark'
+          mode='inline'>
+          {param.map((menuItem) => {
+            return (
+              <Menu.Item key={menuItem.menuPath}>
+                <span>{menuItem.menuName}</span>
+              </Menu.Item>
+            );
+          })}
+        </Menu>
+      );
+    }
+  };
+
   return (
     <div>
-      <Button onClick={toggleCollapsed}>Collapsed</Button>
       <Layout>
         <Sider collapsed={collapsed}>
-          <Menu
-            defaultSelectedKeys={["1"]}
-            theme='dark'
-            // inlineCollapsed={collapsed}
-            mode='inline'>
-            <Menu.Item>
-              <div>Item 1</div>
-            </Menu.Item>
-            <Menu.Item>
-              <div>Item 2</div>
-            </Menu.Item>
-          </Menu>
+          <Button onClick={toggleCollapsed}>click</Button>
+          {menu(menuLists)}
         </Sider>
-        <Content>
-          <Menu>
-            <Item>{children}</Item>
-          </Menu>
-        </Content>
+        <Content>{children}</Content>
       </Layout>
     </div>
   );
@@ -40,6 +54,7 @@ const LeftMenu = ({ children }) => {
 
 LeftMenu.propTypes = {
   children: PropTypes.node,
+  menuLists: PropTypes.any,
 };
 
 export default LeftMenu;

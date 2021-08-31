@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { Suspense, useEffect } from "react";
+import { Redirect, Route } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { protextedPath } from ".";
+import { pathContent, protextedPath } from ".";
 import LeftMenu from "../component/left-menu";
 import { accessMatrixModel } from "../mock/accessMatrix";
 import { accessMatrix, authenticated } from "../state-recoil";
 import { getRoleName } from "../utils/sesstion-storage";
+import Dashboard from "../view/dashboard";
+import Task from "../view/task";
+import Branch from "../view/branch";
+import MerchantQR from "../view/merchantQR";
+import Setting from "../view/setting";
 
 export const RedirectLogin = () => {
   const { login } = protextedPath;
@@ -14,24 +20,59 @@ export const RedirectLogin = () => {
 
 const ApplicationRoute = () => {
   const [menuAccessMatrix, setAccessMatrix] = useRecoilState(accessMatrix);
-  const [isAuthenticated] = useRecoilState(authenticated);
-
+  const [recoilAuth] = useRecoilState(authenticated);
   useEffect(() => {
     saveAccessMatrix();
   }, []);
 
-  console.log("getRoleName:::", getRoleName());
   const saveAccessMatrix = () => {
     return setAccessMatrix(accessMatrixModel);
   };
 
+  const ProtectedRenderContent = ({ children, ...rest }) => {
+    return (
+      <Suspense>
+        <Route exact {...rest}>
+          {children}
+        </Route>
+      </Suspense>
+    );
+  };
+  console.log("getRoleName:::", getRoleName());
   const renderMenuItems = () => {
-    return <h1>renderMenuItems</h1>;
+    return (
+      <div>
+        <React.Fragment>
+          <ProtectedRenderContent path={pathContent.dashboard}>
+            <Dashboard />
+          </ProtectedRenderContent>
+          <ProtectedRenderContent path={pathContent.task}>
+            <Task />
+          </ProtectedRenderContent>
+          <ProtectedRenderContent path={pathContent.branch}>
+            <Branch />
+          </ProtectedRenderContent>
+          <ProtectedRenderContent path={pathContent.merchantQR}>
+            <MerchantQR />
+          </ProtectedRenderContent>
+          <ProtectedRenderContent path={pathContent.setting}>
+            <Setting />
+          </ProtectedRenderContent>
+        </React.Fragment>
+      </div>
+    );
   };
 
   const returnLeftMenu = () => {
-    // <RedirectLogin />
-    return <LeftMenu>{renderMenuItems()}</LeftMenu>;
+    const { isAuthentication } = recoilAuth;
+    if (menuAccessMatrix) {
+      const { menuList } = menuAccessMatrix;
+      return isAuthentication ? (
+        <LeftMenu menuLists={menuList}>{renderMenuItems()}</LeftMenu>
+      ) : (
+        <RedirectLogin />
+      );
+    }
   };
   return returnLeftMenu();
 };

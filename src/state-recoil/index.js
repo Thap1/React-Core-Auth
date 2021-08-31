@@ -13,3 +13,8 @@ export const authenticated = atom({
     userInfo: getUserInfo() ?? {},
   },
 });
+
+export const selectLeftMenu = atom({
+  key: "SELECTMENU",
+  default: "",
+});

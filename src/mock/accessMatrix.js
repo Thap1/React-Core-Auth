@@ -7,7 +7,7 @@ export const accessMatrixModel = {
       level: 0,
       pMenuId: "-1",
       menuId: 1,
-      menuName: "Home",
+      menuName: "Dashboard",
       menuType: 0,
       childList: [],
     },
